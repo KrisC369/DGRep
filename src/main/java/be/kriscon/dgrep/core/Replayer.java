@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ public class Replayer implements IReplay {
     private List<InetAddress> hosts;	//list of hosts to rebroadcast to.
     private int datagramSize; // size of datagram-data buffer.
     private boolean canRun;
+
     /**
      * Creates a replayer-Instance in a new thread.
      * @param listenAddress Adress to listen on
@@ -35,7 +37,7 @@ public class Replayer implements IReplay {
         this.destinationPort = destinationPort;
         this.hosts = hosts;
         datagramSize = 0xFFFF;
-        this.canRun=true;
+        this.canRun = true;
     }
 
     /**
@@ -45,15 +47,15 @@ public class Replayer implements IReplay {
     public void start() {
         new Thread(this).start();
     }
-    
+
     /**
      * Stops this replayer-instance
      */
     @Override
     public void stop() {
         this.setCanRun(false);
-        throw new ThreadDeath();
     }
+
     /**
      * {@inheritDoc}
      * 
@@ -64,22 +66,29 @@ public class Replayer implements IReplay {
             byte[] data = new byte[datagramSize];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             DatagramSocket listensocket = new DatagramSocket(listenPort, listenAddress);
+            listensocket.setSoTimeout(1500);
             DatagramSocket sendSocket = new DatagramSocket();
             System.out.println("Started listening and replaying...");
             while (isCanRun()) {
-                listensocket.receive(packet);
-                //System.out.println("packet received");
-                for (InetAddress sendTo : hosts) {
-                    packet.setPort(destinationPort);
-                    packet.setAddress(sendTo);
-                    sendSocket.send(packet);
+                try {
+                    listensocket.receive(packet);
+                    //System.out.println("packet received");
+                    for (InetAddress sendTo : hosts) {
+                        packet.setPort(destinationPort);
+                        packet.setAddress(sendTo);
+                        sendSocket.send(packet);
+                    }
+                } catch (SocketTimeoutException e) {
                 }
             }
+            listensocket.close();
+            sendSocket.close();
         } catch (SocketException e) {
             Logger.getLogger(Replayer.class.getName()).log(Level.SEVERE, null, e);
         } catch (IOException e) {
-           Logger.getLogger(Replayer.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Replayer.class.getName()).log(Level.SEVERE, null, e);
         }
+        System.out.println("Stopped listening and replaying gracefully...");
     }
 
     /**

@@ -33,12 +33,12 @@ public class DatagramReplayer implements ReplayerAPI {
         runningThreads = new HashSet<IReplay>();
         configLocation = url;
         hosts = new ArrayList<InetAddress>();
-        try {
-            readcfg(url);
-            System.out.println("Config read...");
-        } catch (FileNotFoundException e) {
-            System.out.println("Couldn't read config!");
-        }
+//        try {
+//            readcfg(url);
+//            System.out.println("Config read...");
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Couldn't read config!");
+//        }
     }
 
     /**
@@ -75,6 +75,7 @@ public class DatagramReplayer implements ReplayerAPI {
                 System.out.println("host not found " + line);
             }
         }
+        System.out.println("Config read...");
         in.close();
     }
 
@@ -96,6 +97,7 @@ public class DatagramReplayer implements ReplayerAPI {
      */
     public static void main(String[] args) {
         DatagramReplayer replay = new DatagramReplayer("/configuration");
+        replay.readConfig();
         replay.startListen();
     }
     
@@ -123,13 +125,14 @@ public class DatagramReplayer implements ReplayerAPI {
         for (IReplay thread : runningThreads) {
             thread.stop();
         }
+        resetRunningList();
         return true;
     }
     
     @Override
     public boolean readConfig() {
         try {
-            readConfig();
+            readcfg(configLocation);
         } catch (Exception e) {
             return false;
         }
@@ -139,5 +142,9 @@ public class DatagramReplayer implements ReplayerAPI {
     @Override
     public boolean writeConfig() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private void resetRunningList() {
+        this.runningThreads = new HashSet<IReplay>();
     }
 }
