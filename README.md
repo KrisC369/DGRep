@@ -14,16 +14,12 @@ Maven is used to handle dependencies and further development.
 After cloning the repository, just run the following commands
 to build and package the application into a JAR:
 
-[code]
     mvn validate
     mvn install
-[/code]
 
 Afterwards u can run the application with:
 
-[code]
     java -cp target/DGRep-2.0-SNAPSHOT.jar be.kriscon.dgrep.DatagramReplayer
-[/code]
 
 The config file is located in src/main/resources/
 
