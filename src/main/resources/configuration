@@ -1,0 +1,29 @@
+# This is the config file for the DatagramReplayer.
+#   The first lines in this file can be viewed as comments and can be as long as
+#   possible, although always preceded by an '#'.
+#   The format of the following configuration is as follows: 
+#   
+#    -the first port to listen on for UDP packets.
+#    -the last port to listen on for UDP packets. (All ports in between will be listened on)     
+#    -the listening address on the localhost. (This specifies the interface.
+#    -A demarcation line containing at least one '#'character.
+#    -A list of hosts to broadcast the recieved UDP packets to. One line per host.
+#   
+#   For example: 
+#       3332
+#       3336
+#       192.168.0.7
+#       ###### start list of hosts to rebroadcast to here:
+#       192.168.0.1
+#       192.168.0.2
+#       192.168.0.3
+#       192.168.0.4  
+3332
+3336
+192.168.0.7
+####### start list of hosts to rebroadcast to here:
+192.168.0.1
+192.168.0.167
+192.168.0.5
+192.168.0.9
+
