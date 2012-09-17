@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * TestFrame.java
  *
  * Created on Sep 2, 2012, 11:20:08 PM
