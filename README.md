@@ -23,4 +23,13 @@ Afterwards u can run the application with:
 
 The config file is located in src/main/resources/
 
+I also used this a little example of using the gcj compiler to compile to
+native machine code. 
+
+After invoking the maven build system, try the following commands
+to create a native executable.
+
+    gcj -fjni --CLASSPATH=/home/kristof/gitworkspace/DGRep-3.0-SNAPSHOT.jar --no-bounds-check -O3 -c -g DGRep-2.0-SNAPSHOT.jar -o DGREP.o
+    gcj -fjni --main=be.kriscon.dgrep.DatagramReplayer -o dgrep DGREP.o
+
 ############################################################################
