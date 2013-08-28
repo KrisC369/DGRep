@@ -17,45 +17,44 @@ import java.util.Set;
  * @author Kristof Coninx <kristof.coninx at student.kuleuven.be>
  */
 public class DatagramReplayer implements ReplayerAPI {
-    
-    private String configLocation; //the path to the config file
-    private int listenPortStart; // first port to listen on
-    private int listenPortEnd; // last port to listen on
-    private InetAddress listenAddress; //address to listen on
-    private List<InetAddress> hosts;	//list of hosts to rebroadcast to.
+
+    //the path to the config file
+    private String configLocation;
+    // first port to listen on
+    private int listenPortStart;
+    // last port to listen on
+    private int listenPortEnd;
+    //address to listen on
+    private InetAddress listenAddress;
+    //list of hosts to rebroadcast to.
+    private List<InetAddress> hosts;
     private Set<IReplay> runningThreads;
 
     /**
-     * Default constructor 
-     * sets variables and reads config
+     * Default constructor sets variables and reads config
      */
     public DatagramReplayer(String url) {
         runningThreads = new HashSet<IReplay>();
         configLocation = url;
         hosts = new ArrayList<InetAddress>();
-//        try {
-//            readcfg(url);
-//            System.out.println("Config read...");
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Couldn't read config!");
-//        }
     }
 
     /**
-     * Reads Config file 
-     * @param cfg the config file to read from 
+     * Reads Config file
+     *
+     * @param cfg the config file to read from
      * @throws FileNotFoundException if file not found.
      */
     @SuppressWarnings("empty-statement")
     private void readcfg(String url) throws FileNotFoundException {
         Scanner in;
         in = new Scanner(DatagramReplayer.class.getResourceAsStream(url));
-            
+
         String line = in.nextLine();
-        while(in.hasNext() && line.contains("#")){
+        while (in.hasNext() && line.contains("#")) {
             line = in.nextLine();
         }
-            
+
         listenPortStart = Integer.parseInt(line);
         line = in.nextLine();
         listenPortEnd = Integer.parseInt(line);
@@ -80,7 +79,8 @@ public class DatagramReplayer implements ReplayerAPI {
     }
 
     /**
-     * Starts listening on the set range of sockets and rebroadcasts any packet received to list of hosts.
+     * Starts listening on the set range of sockets and rebroadcasts any packet
+     * received to list of hosts.
      */
     private void startListen() {
         Replayer current;
@@ -93,6 +93,7 @@ public class DatagramReplayer implements ReplayerAPI {
 
     /**
      * start main.
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -100,14 +101,14 @@ public class DatagramReplayer implements ReplayerAPI {
         replay.readConfig();
         replay.startListen();
     }
-    
+
     @Override
     public void addDestinationHosts(Collection<InetAddress> hosts) {
         for (InetAddress h : hosts) {
             this.hosts.add(h);
         }
     }
-    
+
     @Override
     public boolean startReplay() {
         try {
@@ -119,7 +120,7 @@ public class DatagramReplayer implements ReplayerAPI {
         }
         return true;
     }
-    
+
     @Override
     public boolean stopReplay() {
         for (IReplay thread : runningThreads) {
@@ -128,7 +129,7 @@ public class DatagramReplayer implements ReplayerAPI {
         resetRunningList();
         return true;
     }
-    
+
     @Override
     public boolean readConfig() {
         try {
@@ -138,7 +139,7 @@ public class DatagramReplayer implements ReplayerAPI {
         }
         return true;
     }
-    
+
     @Override
     public boolean writeConfig() {
         throw new UnsupportedOperationException("Not supported yet.");

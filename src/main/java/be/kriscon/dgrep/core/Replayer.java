@@ -17,15 +17,21 @@ import java.util.logging.Logger;
  */
 public class Replayer implements IReplay {
 
-    private int listenPort; //port to listen on
-    private int destinationPort; //port to send to 
-    private InetAddress listenAddress; //address to listen on
-    private List<InetAddress> hosts;	//list of hosts to rebroadcast to.
-    private int datagramSize; // size of datagram-data buffer.
+    //port to listen on
+    private int listenPort;
+    //port to send to
+    private int destinationPort;
+    //address to listen on
+    private InetAddress listenAddress;
+    //list of hosts to rebroadcast to.
+    private List<InetAddress> hosts;
+    // size of datagram-data buffer.
+    private int datagramSize;
     private boolean canRun;
 
     /**
      * Creates a replayer-Instance in a new thread.
+     *
      * @param listenAddress Adress to listen on
      * @param listenPort Port to listen on
      * @param destinationPort Port to replay to
@@ -58,7 +64,7 @@ public class Replayer implements IReplay {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      */
     @Override
     public void run() {
@@ -72,7 +78,6 @@ public class Replayer implements IReplay {
             while (isCanRun()) {
                 try {
                     listensocket.receive(packet);
-                    //System.out.println("packet received");
                     for (InetAddress sendTo : hosts) {
                         packet.setPort(destinationPort);
                         packet.setAddress(sendTo);
