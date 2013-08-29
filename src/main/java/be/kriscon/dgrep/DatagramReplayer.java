@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class DatagramReplayer implements ReplayerAPI {
 
     /*the path to the config file*/
-    private String configLocation;
+    private final String configLocation;
     /* first port to listen on*/
     private int listenPortStart;
     /* last port to listen on*/
@@ -29,7 +29,7 @@ public class DatagramReplayer implements ReplayerAPI {
     /*address to listen on*/
     private InetAddress listenAddress;
     /* list of hosts to rebroadcast to.*/
-    private List<InetAddress> hosts;
+    private final List<InetAddress> hosts;
     /* the collection of all threads running*/
     private Set<IReplay> runningThreads;
     /* The logger for this class. */

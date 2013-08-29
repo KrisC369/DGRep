@@ -18,15 +18,15 @@ import java.util.logging.Logger;
 public class Replayer implements IReplay {
 
     /*port to listen on*/
-    private int listenPort;
+    private final int listenPort;
     /*port to send to*/
-    private int destinationPort;
+    private final int destinationPort;
     /*address to listen on*/
-    private InetAddress listenAddress;
+    private final InetAddress listenAddress;
     /*list of hosts to rebroadcast to.*/
-    private List<InetAddress> hosts;
+    private final List<InetAddress> hosts;
     /* size of datagram-data buffer.*/
-    private int datagramSize;
+    private final int datagramSize;
     /*signifying if this instance is allowed to run*/
     private boolean canRun;
     private static final Logger LOGGER = Logger.getLogger("Replayer.class");
