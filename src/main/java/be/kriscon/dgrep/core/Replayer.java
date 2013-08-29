@@ -28,6 +28,7 @@ public class Replayer implements IReplay {
     // size of datagram-data buffer.
     private int datagramSize;
     private boolean canRun;
+    private static final Logger logger = Logger.getLogger("Replayer.class");
 
     /**
      * Creates a replayer-Instance in a new thread.
@@ -74,7 +75,8 @@ public class Replayer implements IReplay {
             DatagramSocket listensocket = new DatagramSocket(listenPort, listenAddress);
             listensocket.setSoTimeout(1500);
             DatagramSocket sendSocket = new DatagramSocket();
-            System.out.println("Started listening and replaying...");
+            logger.log(Level.INFO, "Started listening and replaying...");
+
             while (isCanRun()) {
                 try {
                     listensocket.receive(packet);
@@ -93,7 +95,8 @@ public class Replayer implements IReplay {
         } catch (IOException e) {
             Logger.getLogger(Replayer.class.getName()).log(Level.SEVERE, null, e);
         }
-        System.out.println("Stopped listening and replaying gracefully...");
+        logger.log(Level.INFO, "Stopped listening and replaying gracefully...");
+
     }
 
     /**

@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +31,7 @@ public class DatagramReplayer implements ReplayerAPI {
     //list of hosts to rebroadcast to.
     private List<InetAddress> hosts;
     private Set<IReplay> runningThreads;
+    private static final Logger logger = Logger.getLogger("DatagramReplayer.class");
 
     /**
      * Default constructor sets variables and reads config
@@ -62,7 +65,7 @@ public class DatagramReplayer implements ReplayerAPI {
         try {
             listenAddress = InetAddress.getByName(line);
         } catch (UnknownHostException e) {
-            System.out.println("error in listenAddress");
+            logger.log(Level.INFO, "error in listenAddress");
         }
         line = in.nextLine();
         assert (line.contains("#"));
@@ -71,10 +74,10 @@ public class DatagramReplayer implements ReplayerAPI {
             try {
                 hosts.add(InetAddress.getByName(line));
             } catch (UnknownHostException e) {
-                System.out.println("host not found " + line);
+                logger.log(Level.INFO, "host not found {0}", line);
             }
         }
-        System.out.println("Config read...");
+        logger.log(Level.INFO, "Config read...");
         in.close();
     }
 
