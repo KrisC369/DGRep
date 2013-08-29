@@ -20,18 +20,20 @@ import java.util.logging.Logger;
  */
 public class DatagramReplayer implements ReplayerAPI {
 
-    //the path to the config file
+    /*the path to the config file*/
     private String configLocation;
-    // first port to listen on
+    /* first port to listen on*/
     private int listenPortStart;
-    // last port to listen on
+    /* last port to listen on*/
     private int listenPortEnd;
-    //address to listen on
+    /*address to listen on*/
     private InetAddress listenAddress;
-    //list of hosts to rebroadcast to.
+    /* list of hosts to rebroadcast to.*/
     private List<InetAddress> hosts;
+    /* the collection of all threads running*/
     private Set<IReplay> runningThreads;
-    private static final Logger logger = Logger.getLogger("DatagramReplayer.class");
+    /* The logger for this class. */
+    private static final Logger LOGGER = Logger.getLogger("DatagramReplayer.class");
 
     /**
      * Default constructor sets variables and reads config
@@ -65,7 +67,7 @@ public class DatagramReplayer implements ReplayerAPI {
         try {
             listenAddress = InetAddress.getByName(line);
         } catch (UnknownHostException e) {
-            logger.log(Level.INFO, "error in listenAddress");
+            LOGGER.log(Level.INFO, "error in listenAddress");
         }
         line = in.nextLine();
         assert (line.contains("#"));
@@ -74,10 +76,10 @@ public class DatagramReplayer implements ReplayerAPI {
             try {
                 hosts.add(InetAddress.getByName(line));
             } catch (UnknownHostException e) {
-                logger.log(Level.INFO, "host not found {0}", line);
+                LOGGER.log(Level.INFO, "host not found {0}", line);
             }
         }
-        logger.log(Level.INFO, "Config read...");
+        LOGGER.log(Level.INFO, "Config read...");
         in.close();
     }
 

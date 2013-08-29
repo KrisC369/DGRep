@@ -17,18 +17,19 @@ import java.util.logging.Logger;
  */
 public class Replayer implements IReplay {
 
-    //port to listen on
+    /*port to listen on*/
     private int listenPort;
-    //port to send to
+    /*port to send to*/
     private int destinationPort;
-    //address to listen on
+    /*address to listen on*/
     private InetAddress listenAddress;
-    //list of hosts to rebroadcast to.
+    /*list of hosts to rebroadcast to.*/
     private List<InetAddress> hosts;
-    // size of datagram-data buffer.
+    /* size of datagram-data buffer.*/
     private int datagramSize;
+    /*signifying if this instance is allowed to run*/
     private boolean canRun;
-    private static final Logger logger = Logger.getLogger("Replayer.class");
+    private static final Logger LOGGER = Logger.getLogger("Replayer.class");
 
     /**
      * Creates a replayer-Instance in a new thread.
@@ -75,7 +76,7 @@ public class Replayer implements IReplay {
             DatagramSocket listensocket = new DatagramSocket(listenPort, listenAddress);
             listensocket.setSoTimeout(1500);
             DatagramSocket sendSocket = new DatagramSocket();
-            logger.log(Level.INFO, "Started listening and replaying...");
+            LOGGER.log(Level.INFO, "Started listening and replaying...");
 
             while (isCanRun()) {
                 try {
@@ -95,7 +96,7 @@ public class Replayer implements IReplay {
         } catch (IOException e) {
             Logger.getLogger(Replayer.class.getName()).log(Level.SEVERE, null, e);
         }
-        logger.log(Level.INFO, "Stopped listening and replaying gracefully...");
+        LOGGER.log(Level.INFO, "Stopped listening and replaying gracefully...");
 
     }
 
